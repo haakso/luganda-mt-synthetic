@@ -6,7 +6,6 @@
 models/
 data/
 results/
-*.jsonl
 mlruns/
 __pycache__/
 *.pyc
