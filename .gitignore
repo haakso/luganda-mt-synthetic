@@ -1,0 +1,13 @@
+# Model weights
+*.safetensors
+*.bin
+*.pt
+*.pth
+models/
+data/
+results/
+*.jsonl
+mlruns/
+__pycache__/
+*.pyc
+.env
