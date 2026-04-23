@@ -5,9 +5,9 @@ Candidate models (7–8B base, 4-bit quantized) are scored with COMET (wmt22-com
 
 ## Prerequisites
 
-- Docker with [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+- [uv](https://docs.astral.sh/uv/) for dependency management (host-side download script + local dev)
+- Docker with [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) for evaluation runs
 - A HuggingFace account with the [Llama 3.1 license accepted](https://huggingface.co/meta-llama/Llama-3.1-8B)
-- `huggingface_hub` installed on the host machine (`pip install huggingface_hub`) for the download script
 
 ## Candidate models
 
@@ -24,7 +24,7 @@ Candidate models (7–8B base, 4-bit quantized) are scored with COMET (wmt22-com
 2. Copy `.env.example` to `.env` and fill in your values (`HF_TOKEN`, `MODEL_CACHE_DIR`, `DATA_DIR`, `OUTPUT_DIR`, `MLFLOW_TRACKING_URI`)
 3. Download model weights into `MODEL_CACHE_DIR` (skips models already present):
    ```bash
-   python scripts/download_models.py
+   uv run scripts/download_models.py
    ```
 4. Build the image (downloads COMET at build time — requires internet):
    ```bash
@@ -33,18 +33,20 @@ Candidate models (7–8B base, 4-bit quantized) are scored with COMET (wmt22-com
 
 ## Test data format
 
-The test set at `DATA_DIR/test_initial/pairs.jsonl` must be newline-delimited JSON with the following fields:
+The test set at `DATA_DIR/test.json` must be a JSON array of objects with the following fields:
 
 ```json
-{
-  "text_id": "har_s0005",
-  "luganda": "Luganda sentence here",
-  "english": "English translation here",
-  "dataset_origin": "makerere2024",
-  "is_synthetic": false,
-  "derived_from": null,
-  "seed_group": null
-}
+[
+  {
+    "text_id": "har_s0005",
+    "luganda": "Luganda sentence here",
+    "english": "English translation here",
+    "dataset_origin": "makerere2024",
+    "is_synthetic": false,
+    "derived_from": null,
+    "seed_group": null
+  }
+]
 ```
 
 ## Running Evaluation

@@ -21,8 +21,8 @@ MODEL_REGISTRY = {
     "gemma":   "/models/gemma-7b-multilingual",
 }
 
-TEST_DATA_PATH = "/data/test_initial/pairs.jsonl"
-COMET_CHECKPOINT = "/opt/comet/wmt22-comet-da/checkpoints/model.ckpt"
+TEST_DATA_PATH = "/data/test.json"
+COMET_CHECKPOINT = Path("/opt/comet/CHECKPOINT").read_text().strip()
 
 
 def load_model_and_tokenizer(model_path: str):
@@ -32,7 +32,7 @@ def load_model_and_tokenizer(model_path: str):
         bnb_4bit_use_double_quant=True,
         bnb_4bit_quant_type="nf4",
     )
-    tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True, padding_side="left")
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained(
@@ -67,9 +67,9 @@ def run_inference(model, tokenizer, prompts: list[str], batch_size: int) -> list
                 do_sample=False,
                 max_new_tokens=256,
             )
-        input_lengths = inputs["attention_mask"].sum(dim=1)
-        for j, ids in enumerate(output_ids):
-            new_tokens = ids[input_lengths[j]:]
+        input_len = inputs["input_ids"].shape[1]
+        for ids in output_ids:
+            new_tokens = ids[input_len:]
             translations.append(tokenizer.decode(new_tokens, skip_special_tokens=True))
     return translations
 
@@ -93,20 +93,31 @@ def main():
     parser.add_argument("--model", required=True, choices=MODEL_REGISTRY.keys())
     parser.add_argument("--batch_size", type=int, default=8)
     parser.add_argument("--output", default=None, help="Path to write per-sentence results JSONL")
+    parser.add_argument("--limit", type=int, default=None, help="Run on only the first N examples (smoke test)")
     args = parser.parse_args()
 
     model_path = MODEL_REGISTRY[args.model]
 
-    pairs = [json.loads(line) for line in Path(TEST_DATA_PATH).read_text().splitlines()]
+    pairs = json.loads(Path(TEST_DATA_PATH).read_text())
+    if args.limit:
+        pairs = pairs[: args.limit]
     df = pd.DataFrame(pairs)  # keys: text_id, luganda, english, dataset_origin, is_synthetic, derived_from, seed_group
 
     prompts = [format_prompt(row["luganda"], args.model) for _, row in df.iterrows()]
 
     model, tokenizer = load_model_and_tokenizer(model_path)
     hypotheses = run_inference(model, tokenizer, prompts, args.batch_size)
+    df = df.assign(hypothesis=hypotheses)
 
-    comet_results = score_with_comet(df["luganda"].tolist(), hypotheses, df["english"].tolist())
-    df = df.assign(hypothesis=hypotheses, comet=comet_results["comet_scores"])
+    # Persist hypotheses immediately so a downstream COMET failure doesn't lose inference work.
+    out_path = Path(args.output) if args.output else None
+    if out_path:
+        df.to_json(out_path, orient="records", lines=True)
+        print(f"Wrote inference output to {out_path}")
+
+    # Free LLM memory before loading COMET's encoder onto the GPU.
+    del model, tokenizer
+    torch.cuda.empty_cache()
 
     mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URI"])
     with mlflow.start_run(run_name=args.model):
@@ -115,6 +126,9 @@ def main():
         mlflow.log_param("test_set", TEST_DATA_PATH)
         mlflow.log_param("num_examples", len(df))
         mlflow.log_param("batch_size", args.batch_size)
+
+        comet_results = score_with_comet(df["luganda"].tolist(), hypotheses, df["english"].tolist())
+        df = df.assign(comet=comet_results["comet_scores"])
         mlflow.log_metric("comet_mean", comet_results["comet_mean"])
 
         for origin, group in df.groupby("dataset_origin"):
@@ -126,8 +140,7 @@ def main():
             mlflow.log_metric(f"comet_mean_{origin}", origin_comet["comet_mean"])
             mlflow.log_param(f"num_examples_{origin}", len(group))
 
-        if args.output:
-            out_path = Path(args.output)
+        if out_path:
             df.to_json(out_path, orient="records", lines=True)
             mlflow.log_artifact(str(out_path))
 

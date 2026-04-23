@@ -4,13 +4,17 @@ Download candidate models from HuggingFace into MODEL_CACHE_DIR.
 Usage:
     HF_TOKEN=hf_... MODEL_CACHE_DIR=/path/to/models python scripts/download_models.py
 
-Re-running is safe: existing non-empty directories are skipped.
+Re-running is safe: directories that already contain model weights are skipped.
+Partial downloads (e.g. just a README/license) will be resumed.
 """
 import os
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
 from huggingface_hub import snapshot_download
+
+load_dotenv()
 
 MODELS = [
     ("meta-llama/Llama-3.1-8B",    "Llama-3.1-8B"),
@@ -33,8 +37,8 @@ def main():
     for repo_id, local_name in MODELS:
         target = cache_path / local_name
 
-        if target.exists() and any(target.iterdir()):
-            print(f"[skip] {local_name} — directory already exists and is non-empty")
+        if target.exists() and any(target.rglob("*.safetensors")):
+            print(f"[skip] {local_name} — weights already present")
             continue
 
         print(f"[download] {repo_id} -> {target}")
