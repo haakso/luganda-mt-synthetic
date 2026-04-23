@@ -6,6 +6,7 @@
 models/
 data/
 mlruns/
+mlartifacts/
 mlflow.db
 __pycache__/
 *.pyc
