@@ -5,7 +5,6 @@
 *.pth
 models/
 data/
-results/
 mlruns/
 mlflow.db
 __pycache__/
