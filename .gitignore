@@ -12,3 +12,6 @@ __pycache__/
 *.pyc
 .env
 .venv/
+
+# HF Trainer intermediate checkpoints (large optimizer state, redundant tokenizer.json)
+results/**/checkpoint-*/

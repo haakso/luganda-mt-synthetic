@@ -17,3 +17,23 @@ services:
       - ${OUTPUT_DIR:-./results}:/results
     env_file:
       - .env
+
+  finetune:
+    image: luganda-eval:latest
+    build: .
+    runtime: nvidia
+    network_mode: host
+    entrypoint: ["python", "scripts/finetune.py"]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}
+      - HF_TOKEN=${HF_TOKEN:-}
+      - HF_DATASETS_OFFLINE=1
+      - TRANSFORMERS_OFFLINE=1
+    volumes:
+      - ${MODEL_CACHE_DIR:-./models}:/models:ro
+      - ${DATA_DIR:-./data}:/data:ro
+      - ${OUTPUT_DIR:-./results}:/results
+    env_file:
+      - .env
