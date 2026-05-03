@@ -1,0 +1,110 @@
+time="2026-04-29T18:25:16Z" level=warning msg="Found orphan containers ([luganda-mt-synthetic-evaluate-run-c6df95bbc8b2 luganda-mt-synthetic-evaluate-run-90262dc0c41f luganda-mt-synthetic-evaluate-run-f1bb0ac199f7 luganda-mt-synthetic-evaluate-run-6605081f9843]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container luganda-mt-synthetic-finetune-run-c329e7e3bd9b Creating 
+ Container luganda-mt-synthetic-finetune-run-c329e7e3bd9b Created 
+/opt/venv/lib/python3.11/site-packages/torchmetrics/utilities/imports.py:23: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:03<00:09,  3.16s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:06<00:06,  3.45s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:10<00:03,  3.38s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:10<00:00,  2.37s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:10<00:00,  2.73s/it]
+  0%|          | 0/8 [00:00<?, ?it/s]2026/04/29 18:25:38 ERROR mlflow.utils.async_logging.async_logging_queue: Run Id 4fc66d57c195404f8df71a8e97084ca9: Failed to log run data: Exception: INVALID_PARAMETER_VALUE: Changing param values is not allowed. Params were already logged='[{'key': 'output_dir', 'old_value': '/results/lora_smoke', 'new_value': '/results/lora_smoke/lora_1x'}]' for run ID='4fc66d57c195404f8df71a8e97084ca9'.
+`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+ 12%|█▎        | 1/8 [00:00<00:05,  1.17it/s] 25%|██▌       | 2/8 [00:01<00:03,  1.60it/s] 38%|███▊      | 3/8 [00:01<00:02,  1.79it/s] 50%|█████     | 4/8 [00:02<00:02,  1.91it/s] 62%|██████▎   | 5/8 [00:02<00:01,  1.98it/s] 75%|███████▌  | 6/8 [00:03<00:00,  2.04it/s] 88%|████████▊ | 7/8 [00:03<00:00,  2.07it/s]100%|██████████| 8/8 [00:04<00:00,  2.09it/s]
+  0%|          | 0/16 [00:00<?, ?it/s][A
+ 19%|█▉        | 3/16 [00:00<00:00, 19.57it/s][A
+ 31%|███▏      | 5/16 [00:00<00:00, 15.75it/s][A
+ 44%|████▍     | 7/16 [00:00<00:00, 14.45it/s][A
+ 56%|█████▋    | 9/16 [00:00<00:00, 13.70it/s][A
+ 69%|██████▉   | 11/16 [00:00<00:00, 13.47it/s][A
+ 81%|████████▏ | 13/16 [00:00<00:00, 13.34it/s][A
+ 94%|█████████▍| 15/16 [00:01<00:00, 13.21it/s][A                                             
+                                               [A{'eval_loss': 2.861032247543335, 'eval_runtime': 1.254, 'eval_samples_per_second': 12.759, 'eval_steps_per_second': 12.759, 'epoch': 1.0}
+100%|██████████| 8/8 [00:05<00:00,  2.09it/s]
+100%|██████████| 16/16 [00:01<00:00, 13.21it/s][A
+                                               [A                                             {'train_runtime': 5.7121, 'train_samples_per_second': 2.801, 'train_steps_per_second': 1.401, 'train_loss': 3.1946208477020264, 'epoch': 1.0}
+100%|██████████| 8/8 [00:05<00:00,  2.09it/s]100%|██████████| 8/8 [00:05<00:00,  1.40it/s]
+Inference:   0%|          | 0/16 [00:00<?, ?it/s]Inference:   6%|▋         | 1/16 [00:00<00:07,  2.03it/s]Inference:  12%|█▎        | 2/16 [00:00<00:05,  2.65it/s]Inference:  19%|█▉        | 3/16 [00:01<00:04,  2.76it/s]Inference:  25%|██▌       | 4/16 [00:01<00:05,  2.39it/s]Inference:  31%|███▏      | 5/16 [00:01<00:04,  2.65it/s]Inference:  38%|███▊      | 6/16 [00:02<00:03,  2.57it/s]Inference:  44%|████▍     | 7/16 [00:02<00:04,  2.23it/s]Inference:  50%|█████     | 8/16 [00:03<00:03,  2.36it/s]Inference:  56%|█████▋    | 9/16 [00:03<00:02,  2.40it/s]Inference:  62%|██████▎   | 10/16 [00:04<00:02,  2.55it/s]Inference:  69%|██████▉   | 11/16 [00:04<00:02,  2.35it/s]Inference:  75%|███████▌  | 12/16 [00:04<00:01,  2.58it/s]Inference:  81%|████████▏ | 13/16 [00:05<00:01,  2.48it/s]Inference:  88%|████████▊ | 14/16 [00:05<00:00,  2.40it/s]Inference:  94%|█████████▍| 15/16 [00:06<00:00,  2.67it/s]Inference: 100%|██████████| 16/16 [00:06<00:00,  2.64it/s]Inference: 100%|██████████| 16/16 [00:06<00:00,  2.50it/s]
+[lora_1x] wrote inference output to /results/lora_smoke/lora_1x_eval_results.jsonl
+Lightning automatically upgraded your loaded checkpoint from v1.8.3.post1 to v2.6.1. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint ../opt/comet/models--Unbabel--wmt22-comet-da/snapshots/2760a223ac957f30acfb18c8aa649b01cf1d75f2/checkpoints/model.ckpt`
+Encoder model frozen.
+/opt/venv/lib/python3.11/site-packages/pytorch_lightning/core/saving.py:197: Found keys that are not in the model state dict but in the checkpoint: ['encoder.model.embeddings.position_ids']
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+You are using a CUDA device ('NVIDIA RTX PRO 5000 Blackwell') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Predicting: 0it [00:00, ?it/s]Predicting: 0it [00:00, ?it/s]Predicting DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]Predicting DataLoader 0:  50%|█████     | 1/2 [00:00<00:00, 15.42it/s]Predicting DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 20.35it/s]Predicting DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 19.21it/s]
+Lightning automatically upgraded your loaded checkpoint from v1.8.3.post1 to v2.6.1. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint ../opt/comet/models--Unbabel--wmt22-comet-da/snapshots/2760a223ac957f30acfb18c8aa649b01cf1d75f2/checkpoints/model.ckpt`
+Encoder model frozen.
+/opt/venv/lib/python3.11/site-packages/pytorch_lightning/core/saving.py:197: Found keys that are not in the model state dict but in the checkpoint: ['encoder.model.embeddings.position_ids']
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Predicting: 0it [00:00, ?it/s]Predicting: 0it [00:00, ?it/s]Predicting DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s]Predicting DataLoader 0: 100%|██████████| 1/1 [00:00<00:00, 48.86it/s]Predicting DataLoader 0: 100%|██████████| 1/1 [00:00<00:00, 48.24it/s]
+Lightning automatically upgraded your loaded checkpoint from v1.8.3.post1 to v2.6.1. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint ../opt/comet/models--Unbabel--wmt22-comet-da/snapshots/2760a223ac957f30acfb18c8aa649b01cf1d75f2/checkpoints/model.ckpt`
+Encoder model frozen.
+/opt/venv/lib/python3.11/site-packages/pytorch_lightning/core/saving.py:197: Found keys that are not in the model state dict but in the checkpoint: ['encoder.model.embeddings.position_ids']
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Predicting: 0it [00:00, ?it/s]Predicting: 0it [00:00, ?it/s]Predicting DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]Predicting DataLoader 0:  50%|█████     | 1/2 [00:00<00:00, 40.30it/s]Predicting DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 36.46it/s]Predicting DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 34.84it/s]
+🏃 View run lora_1x at: http://localhost:5001/#/experiments/0/runs/4fc66d57c195404f8df71a8e97084ca9
+🧪 View experiment at: http://localhost:5001/#/experiments/0
+We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.38it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.04it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:03<00:01,  1.31s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.04it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.00s/it]
+  0%|          | 0/8 [00:00<?, ?it/s]2026/04/29 18:26:13 ERROR mlflow.utils.async_logging.async_logging_queue: Run Id 45bd51c2612d41369e3e922a50c7c4bf: Failed to log run data: Exception: INVALID_PARAMETER_VALUE: Changing param values is not allowed. Params were already logged='[{'key': 'output_dir', 'old_value': '/results/lora_smoke', 'new_value': '/results/lora_smoke/lora_5x'}]' for run ID='45bd51c2612d41369e3e922a50c7c4bf'.
+ 12%|█▎        | 1/8 [00:00<00:03,  2.00it/s] 25%|██▌       | 2/8 [00:00<00:02,  2.07it/s] 38%|███▊      | 3/8 [00:01<00:02,  2.09it/s] 50%|█████     | 4/8 [00:01<00:01,  2.10it/s] 62%|██████▎   | 5/8 [00:02<00:01,  2.11it/s] 75%|███████▌  | 6/8 [00:02<00:00,  2.12it/s] 88%|████████▊ | 7/8 [00:03<00:00,  2.12it/s]100%|██████████| 8/8 [00:03<00:00,  2.12it/s]
+  0%|          | 0/16 [00:00<?, ?it/s][A
+ 19%|█▉        | 3/16 [00:00<00:00, 19.35it/s][A
+ 31%|███▏      | 5/16 [00:00<00:00, 15.62it/s][A
+ 44%|████▍     | 7/16 [00:00<00:00, 14.39it/s][A
+ 56%|█████▋    | 9/16 [00:00<00:00, 13.72it/s][A
+ 69%|██████▉   | 11/16 [00:00<00:00, 13.47it/s][A
+ 81%|████████▏ | 13/16 [00:00<00:00, 13.27it/s][A
+ 94%|█████████▍| 15/16 [00:01<00:00, 13.16it/s][A                                             
+                                               [A{'eval_loss': 2.8699300289154053, 'eval_runtime': 1.2416, 'eval_samples_per_second': 12.887, 'eval_steps_per_second': 12.887, 'epoch': 1.0}
+100%|██████████| 8/8 [00:05<00:00,  2.12it/s]
+100%|██████████| 16/16 [00:01<00:00, 13.16it/s][A
+                                               [A                                             {'train_runtime': 5.358, 'train_samples_per_second': 2.986, 'train_steps_per_second': 1.493, 'train_loss': 3.1940650939941406, 'epoch': 1.0}
+100%|██████████| 8/8 [00:05<00:00,  2.12it/s]100%|██████████| 8/8 [00:05<00:00,  1.49it/s]
+Inference:   0%|          | 0/16 [00:00<?, ?it/s]Inference:   6%|▋         | 1/16 [00:00<00:06,  2.15it/s]Inference:  12%|█▎        | 2/16 [00:00<00:05,  2.67it/s]Inference:  19%|█▉        | 3/16 [00:01<00:04,  2.79it/s]Inference:  25%|██▌       | 4/16 [00:01<00:04,  2.40it/s]Inference:  31%|███▏      | 5/16 [00:01<00:04,  2.64it/s]Inference:  38%|███▊      | 6/16 [00:02<00:03,  2.61it/s]Inference:  44%|████▍     | 7/16 [00:02<00:04,  2.13it/s]Inference:  50%|█████     | 8/16 [00:03<00:03,  2.29it/s]Inference:  56%|█████▋    | 9/16 [00:03<00:03,  2.30it/s]Inference:  62%|██████▎   | 10/16 [00:04<00:02,  2.46it/s]Inference:  69%|██████▉   | 11/16 [00:04<00:02,  2.27it/s]Inference:  75%|███████▌  | 12/16 [00:04<00:01,  2.51it/s]Inference:  81%|████████▏ | 13/16 [00:05<00:01,  2.56it/s]Inference:  88%|████████▊ | 14/16 [00:05<00:00,  2.52it/s]Inference:  94%|█████████▍| 15/16 [00:06<00:00,  2.51it/s]Inference: 100%|██████████| 16/16 [00:06<00:00,  2.51it/s]Inference: 100%|██████████| 16/16 [00:06<00:00,  2.46it/s]
+[lora_5x] wrote inference output to /results/lora_smoke/lora_5x_eval_results.jsonl
+Lightning automatically upgraded your loaded checkpoint from v1.8.3.post1 to v2.6.1. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint ../opt/comet/models--Unbabel--wmt22-comet-da/snapshots/2760a223ac957f30acfb18c8aa649b01cf1d75f2/checkpoints/model.ckpt`
+Encoder model frozen.
+/opt/venv/lib/python3.11/site-packages/pytorch_lightning/core/saving.py:197: Found keys that are not in the model state dict but in the checkpoint: ['encoder.model.embeddings.position_ids']
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Predicting: 0it [00:00, ?it/s]Predicting: 0it [00:00, ?it/s]Predicting DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]Predicting DataLoader 0:  50%|█████     | 1/2 [00:00<00:00, 39.00it/s]Predicting DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 31.62it/s]Predicting DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 28.69it/s]
+Lightning automatically upgraded your loaded checkpoint from v1.8.3.post1 to v2.6.1. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint ../opt/comet/models--Unbabel--wmt22-comet-da/snapshots/2760a223ac957f30acfb18c8aa649b01cf1d75f2/checkpoints/model.ckpt`
+Encoder model frozen.
+/opt/venv/lib/python3.11/site-packages/pytorch_lightning/core/saving.py:197: Found keys that are not in the model state dict but in the checkpoint: ['encoder.model.embeddings.position_ids']
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Predicting: 0it [00:00, ?it/s]Predicting: 0it [00:00, ?it/s]Predicting DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s]Predicting DataLoader 0: 100%|██████████| 1/1 [00:00<00:00, 47.80it/s]Predicting DataLoader 0: 100%|██████████| 1/1 [00:00<00:00, 46.50it/s]
+Lightning automatically upgraded your loaded checkpoint from v1.8.3.post1 to v2.6.1. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint ../opt/comet/models--Unbabel--wmt22-comet-da/snapshots/2760a223ac957f30acfb18c8aa649b01cf1d75f2/checkpoints/model.ckpt`
+Encoder model frozen.
+/opt/venv/lib/python3.11/site-packages/pytorch_lightning/core/saving.py:197: Found keys that are not in the model state dict but in the checkpoint: ['encoder.model.embeddings.position_ids']
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+💡 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+💡 Tip: For seamless cloud uploads and versioning, try installing [litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint, which syncs automatically with the Lightning model registry.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+Predicting: 0it [00:00, ?it/s]Predicting: 0it [00:00, ?it/s]Predicting DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]Predicting DataLoader 0:  50%|█████     | 1/2 [00:00<00:00, 43.61it/s]Predicting DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 37.76it/s]Predicting DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 35.56it/s]
+🏃 View run lora_5x at: http://localhost:5001/#/experiments/0/runs/45bd51c2612d41369e3e922a50c7c4bf
+🧪 View experiment at: http://localhost:5001/#/experiments/0
+
+Condition  | Method | Data | COMET  | Examples | Status
+-----------|--------|------|--------|----------|--------
+lora_1x    | LoRA   | 1x   | 0.4800 | 16       | complete
+lora_5x    | LoRA   | 5x   | 0.4741 | 16       | complete
+🏃 View run finetune_lora at: http://localhost:5001/#/experiments/0/runs/f153b4ad03444c34a27ec3b4946b6e19
+🧪 View experiment at: http://localhost:5001/#/experiments/0

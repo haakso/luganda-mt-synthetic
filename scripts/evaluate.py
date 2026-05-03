@@ -18,7 +18,7 @@ MODEL_REGISTRY = {
     "llama3":  "/models/Llama-3.1-8B",
     "mistral": "/models/Mistral-7B-v0.3",
     "aya":     "/models/aya-23-8B",
-    "gemma":   "/models/gemma-7b-multilingual",
+    "gemma":   "/models/gemma-7b",
 }
 
 TEST_DATA_PATH = "/data/test.json"
