@@ -1,0 +1,168 @@
+# Luganda MT Synthetic Data Generation — Session Log
+
+**Project:** Luganda–English Machine Translation Synthetic Dataset Generation  
+**Date:** 2026-05-03  
+**Tools:** Google Gemini API (gemini-2.5-flash), Python, google-genai SDK  
+**Dataset:** 16,926 seed English–Luganda sentence pairs (training.json)  
+**Goal:** Generate two synthetic datasets via Gemini few-shot prompting:
+- `synthetic_1x.json` — 16,926 pairs (1:1 ratio with seed data)
+- `synthetic_5x.json` — 84,630 pairs (5:1 ratio with seed data)
+
+---
+
+## Seed Dataset Schema
+
+```json
+{
+  "text_id": "kim_s07244",
+  "luganda": "Abantu batera okumanya ebintu bingi ebibeetoolodde.",
+  "english": "People usually know a lot of things in their surrounding.",
+  "dataset_origin": "kimrichies2023",
+  "is_synthetic": false,
+  "derived_from": null,
+  "seed_group": null
+}
+```
+
+**Dataset origins in seed data:** `kimrichies2023`, `makerere2024`, `harvard2023`, `kambale2025`  
+**Total seed records:** 16,926  
+**Synthetic records:** 0 (all seed data is human-curated)
+
+---
+
+## Synthetic Data Schema
+
+```json
+{
+  "text_id": "gem1_s00001",
+  "luganda": "...",
+  "english": "...",
+  "dataset_origin": "gemini_synthetic",
+  "is_synthetic": true,
+  "derived_from": ["kim_s39691", "har_s2496", "..."],
+  "seed_group": 1
+}
+```
+
+**text_id conventions:**
+- 1x dataset: `gem1_s00001` through `gem1_s16926` (5-digit suffix)
+- 5x dataset: `gem5_s000001` through `gem5_s084630` (6-digit suffix)
+
+**derived_from:** list of seed `text_id`s shown to Gemini as few-shot examples for that batch  
+**seed_group:** batch index (1-based)
+
+---
+
+## Approach: Few-Shot Prompting (not fine-tuning)
+
+Gemini was not fine-tuned. Instead, each API call included 15 randomly sampled seed pairs as few-shot examples, with Gemini instructed to generate 30 new pairs per batch. This approach:
+- Requires no model training or Vertex AI setup
+- Costs approximately $1–5 total for both datasets
+- Produces varied output by re-sampling seed examples each batch
+
+---
+
+## Script Configuration
+
+| Parameter | Value |
+|---|---|
+| Model | `gemini-2.5-flash` |
+| Batch size | 30 pairs per API call |
+| Examples per call | 15 randomly sampled seed pairs |
+| Max retries | 5 |
+| Retry delay | 65 seconds |
+| Checkpointing | After every batch |
+
+---
+
+## Issues Encountered & Resolutions
+
+### 1. Deprecated SDK
+**Error:** `google.generativeai` package deprecated  
+**Fix:** Switched to `google-genai` package and updated import to `from google import genai`
+
+### 2. Model Not Found
+**Error:** `404 models/gemini-1.5-flash is not found`  
+**Fix:** Updated model name from `gemini-1.5-flash` → `gemini-2.0-flash` → `gemini-2.5-flash`
+
+### 3. Free Tier Quota Exhausted
+**Error:** `429 RESOURCE_EXHAUSTED` with `limit: 0`  
+**Fix:** Added billing account to Google Cloud project; raised monthly spending cap
+
+### 4. No Checkpointing (Data Loss)
+**Problem:** Original script only saved output at the end. A billing interruption at batch 1881/2821 of the 5x run caused loss of ~56,400 already-generated pairs.  
+**Fix:** Rewrote script to save a checkpoint file (`checkpoint_1x.json` / `checkpoint_5x.json`) after every batch, enabling resume on restart.
+
+### 5. Monthly Spending Cap Hit
+**Error:** `Your project has exceeded its monthly spending cap`  
+**Fix:** Raised spending cap at [aistudio.google.com/spend](https://aistudio.google.com/spend)
+
+### 6. Partial 1x Dataset
+**Problem:** 1x run was interrupted at 7,971/16,926 records with no checkpoint.  
+**Fix:** Created checkpoint from partial output file, allowing resume from batch 266/565:
+```bash
+python3 -c "
+import json
+d = json.load(open('synthetic_1x.json'))
+json.dump(d, open('checkpoint_1x.json', 'w'), ensure_ascii=False)
+print(f'Checkpoint created with {len(d)} records')
+"
+```
+
+---
+
+## Setup Instructions
+
+### Requirements
+```bash
+pip install google-genai
+```
+
+### API Key
+1. Go to [aistudio.google.com](https://aistudio.google.com)
+2. Click **Get API key** → **Create API key**
+3. Select a billing-enabled Google Cloud project
+4. Export the key in your terminal session:
+```bash
+export GEMINI_API_KEY="your-key-here"
+```
+
+### Running the Script
+```bash
+python generate_synthetic_luganda.py
+```
+
+If interrupted, simply re-run — the script resumes from the last checkpoint automatically.
+
+---
+
+## Final Outputs
+
+| File | Records | text_id Range |
+|---|---|---|
+| `synthetic_1x.json` | 16,926 | `gem1_s00001` – `gem1_s16926` |
+| `synthetic_5x.json` | 84,630 (target) | `gem5_s000001` – `gem5_s084630` |
+
+---
+
+## Files in This Directory
+
+| File | Description |
+|---|---|
+| `generate_synthetic_luganda.py` | Main generation script |
+| `training.json` | Seed dataset (16,926 human-curated pairs) |
+| `synthetic_1x.json` | Generated 1x synthetic dataset |
+| `synthetic_5x.json` | Generated 5x synthetic dataset |
+| `checkpoint_5x.json` | Temporary resume file (deleted on completion) |
+
+---
+
+## Cost Summary (Approximate)
+
+| Item | Estimate |
+|---|---|
+| 1x generation (16,926 pairs, ~565 API calls) | ~$0.50 |
+| 5x generation (84,630 pairs, ~2,821 API calls) | ~$2.50 |
+| **Total** | **~$3.00** |
+
+*Using gemini-2.5-flash on paid tier. Actual cost varies with token count per batch.*
