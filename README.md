@@ -70,3 +70,6 @@ Each run logs:
 | `num_examples_<dataset_origin>` | Example count per origin (logged as a param) |
 
 If `--output` is provided, the results file includes all original fields plus `hypothesis` and per-sentence `comet` scores.
+
+## AI Usage
+In a first session, Claude Code was used as a code generation and iteration assistant. Starting from a detailed spec prompt, it scaffolded the  project from scratch, generating a Dockerfile, docker-compose configuration, evaluation script, and supporting files. From there, I issued targeted instructions to refine specific code blocks, update data schemas, add models to the registry, and keep documentation up to date. In a separate session on Professor joelawalsh01's account, Claude Code was used to migrate the project to uv and update GPU targets for Blackwell architecture. A final session on joelawalsh01's account added a QLoRA finetuning script. `claude_session_log.md` in `ai-usage-logs` contains the transcript of the first seesion conducted on haakso's device. Transcripts for the remaining sessions conducted on joelawalsh01's device are not included.
